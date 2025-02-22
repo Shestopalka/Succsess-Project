@@ -15,11 +15,11 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  name: string;
+  @Column({ nullable: true })
+  isVerified: boolean;
 
   @Column()
-  surname: string;
+  userToken: string;
 
   @Column({ unique: true })
   email: string;

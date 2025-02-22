@@ -30,7 +30,6 @@ export class SocialController {
   @UseGuards(JwtAuthGuard)
   @Get('messageList')
   getMessage(@Request() req) {
-    const user = req.user;
-    return this.socialService.getMessage(user);
+    return this.socialService.getMessage(req.user);
   }
 }

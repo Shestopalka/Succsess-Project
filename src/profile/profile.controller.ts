@@ -3,7 +3,6 @@ import {
   Get,
   UseGuards,
   Request,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Post,
   Body,
   Put,
@@ -25,8 +24,7 @@ export class ProfileController {
   @UseGuards(JwtAuthGuard)
   @Get('profile/friendlist')
   getFriendList(@Request() req) {
-    const userId = req.user.userId;
-    return this.profileService.friendList(userId);
+    return this.profileService.friendList(req.user.userId);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -43,27 +41,28 @@ export class ProfileController {
     }),
   )
   async getAvatar(@UploadedFile() file: Express.Multer.File, @Request() req) {
-    const filedName = file.fieldname;
-    const bufer = file.buffer;
-    const mimeType = file.mimetype;
-    const url = await this.s3Service.uploadFile(bufer, filedName, mimeType);
-    console.log(url, 'controller');
-
-    const userId = req.user.userId;
-    return this.profileService.addAvatar(url, userId);
+    const url = await this.s3Service.uploadFile(
+      file.buffer,
+      file.fieldname,
+      file.mimetype,
+    );
+    return this.profileService.addAvatar(url, req.user.userId);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('profile')
+  @Get()
   getProfile(@Request() req) {
-    return this.profileService.getProfile(req.user);
+    return this.profileService.getProfile(req.user.userId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Put('profile/Edit/bio')
   addBio(@Body() body, @Request() req) {
     const { bio } = body;
-    const userId = req.user.userId;
-    return this.profileService.addBio(bio, userId);
+    return this.profileService.addBio(bio, req.user.userId);
   }
+
+  // @UseGuards(JwtAuthGuard)
+  // @Delete('profile/setings/deleteAccount')
+  // DeleteAccount(@Request() req) {}
 }

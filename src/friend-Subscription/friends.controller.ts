@@ -1,13 +1,10 @@
 import {
   Body,
   Controller,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  Post,
   UseGuards,
   Request,
   Put,
   Delete,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   Get,
   Param,
 } from '@nestjs/common';
@@ -23,37 +20,27 @@ export class FriendsController {
 
   @UseGuards(JwtAuthGuard)
   @Put('profile:nickName/subscribe')
-  subscribbeUser(@Param('nickName') nickName: string, @Request() req) {
-    const userId = req.user.userId;
-    return this.friendsService.subscription(nickName, userId);
+  async subscribbeUser(@Param('nickName') nickName: string, @Request() req) {
+    return await this.friendsService.subscription(nickName, req.user.userId);
   }
 
   @UseGuards(JwtAuthGuard)
   @Put('profile:nickName/unsubscribe')
-  unsubscribe(@Param('nickName') nickName: string, @Request() req) {
-    const user = req.user;
-
-    return this.friendsService.unsubscribeUser(nickName, user);
+  async unsubscribe(@Param('nickName') nickName: string, @Request() req) {
+    return await this.friendsService.unsubscribeUser(nickName, req.user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get('profile:nickName')
   async getUserProfile(@Param('nickName') nickName: string) {
     const user = await this.friendsService.FindUser(nickName);
-    console.log(user);
 
-    return this.profileService.getProfile(user);
+    return await this.profileService.getProfile(user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete('friendlist/deletefriend')
-  deleteFriend(@Body() nick: string, @Request() req) {
-    const nickName = nick;
-    console.log(nickName, 'controller');
-
-    const userId = req.user.userId;
-    console.log(userId, 'controller ');
-
-    return this.friendsService.deliteFriends(nickName, userId);
+  async deleteFriend(@Body() nick: string, @Request() req) {
+    return await this.friendsService.deliteFriends(nick, req.user.userId);
   }
 }

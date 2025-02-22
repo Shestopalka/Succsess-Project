@@ -1,10 +1,5 @@
-import {
-  BadRequestException,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
-import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
@@ -26,23 +21,6 @@ export class AuthService {
 
   sayHello() {
     return 'Hello World!';
-  }
-  async validateUser(email: string, password: string) {
-    const user = await this.userServise.findOne(email);
-
-    if (!user) {
-      throw new UnauthorizedException();
-    }
-
-    const passwordIsMatch = await bcrypt.compare(password, user.password);
-    if (!passwordIsMatch) {
-      throw new UnauthorizedException();
-    }
-
-    const userWithoutPassword = { ...user };
-    delete userWithoutPassword.password;
-
-    return userWithoutPassword;
   }
   async login(user: any) {
     const payload = { sub: user.id, userEmail: user.email };

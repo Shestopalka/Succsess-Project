@@ -14,7 +14,7 @@ export class SocialService {
     private readonly userProfileRepository: Repository<UsersProfile>,
   ) {}
 
-  async getMessage(user: any) {
+  async getMessage(user: any): Promise<object> {
     const userExist = await this.userProfileRepository.findOne({
       where: { userId: user.userId },
     });

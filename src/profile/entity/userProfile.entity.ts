@@ -1,6 +1,5 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
   OneToMany,
   OneToOne,
@@ -28,9 +27,6 @@ export class UsersProfile {
 
   @Column({ nullable: true })
   email: string;
-
-  @Column()
-  password: string;
 
   @Column({ nullable: true })
   biography: string;

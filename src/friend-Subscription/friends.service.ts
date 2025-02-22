@@ -59,7 +59,7 @@ export class FriendsService {
         return profile;
       }
 
-      // Перевірка на існування користувача
+      // Перевірка чи існує користувача
       if (!receiver) throw new BadRequestException('User not found');
 
       // Check for an existing request in both directions
@@ -109,7 +109,7 @@ export class FriendsService {
     }
     // Користувач, котрий надсилає запит
   }
-  async deliteFriends(nickName: string, user: any) {
+  async deliteFriends(nickName: string, user: any): Promise<string> {
     try {
       const userFriend = await this.userProfileRepository.findOne({
         where: {
@@ -132,7 +132,7 @@ export class FriendsService {
     }
   }
 
-  async subscription(nickName: string, userId: number) {
+  async subscription(nickName: string, userId: number): Promise<string> {
     try {
       const existNickName = await this.userProfileRepository.findOne({
         where: { nickName: nickName },
@@ -193,7 +193,7 @@ export class FriendsService {
       return error.message;
     }
   }
-  async unsubscribeUser(nickName: string, user: any) {
+  async unsubscribeUser(nickName: string, user: any): Promise<void> {
     const existNickName = await this.userProfileRepository.findOne({
       where: { nickName: nickName },
     });
@@ -220,7 +220,7 @@ export class FriendsService {
       isRead: false,
     });
   }
-  async FindUser(nickName: string) {
+  async FindUser(nickName: string): Promise<UsersProfile> {
     const user = await this.userProfileRepository.findOne({
       where: { nickName: nickName },
     });

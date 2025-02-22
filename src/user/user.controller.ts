@@ -4,18 +4,30 @@ import {
   Body,
   ValidationPipe,
   UsePipes,
+  Param,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
+  @Post('registration')
   @UsePipes(new ValidationPipe())
   async create(@Body() createUserDto: CreateUserDto) {
-    const user = await this.userService.createUser(createUserDto);
-    return { message: 'User', user };
+    const vereficationToken = await this.userService.createUser(createUserDto);
+    if (vereficationToken)
+      return `http://localhost:3000/users/auth/verify-email${vereficationToken}`;
+  }
+  @Post('/auth/verify-email:vereficationToken')
+  @UsePipes(new ValidationPipe())
+  async verifycationEmail(
+    @Body() body: { verefyPass: string },
+    @Param('vereficationToken') vereficationToken: string,
+  ) {
+    const pass = body.verefyPass;
+
+    return this.userService.VereficationUserPass(pass, vereficationToken);
   }
 }

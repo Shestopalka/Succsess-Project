@@ -11,10 +11,13 @@ export class ProfileService {
     @InjectRepository(FriendUser)
     private readonly userFriendRepository: Repository<FriendUser>,
   ) {}
-  async getProfile(user: any) {
-    return user;
+  async getProfile(user: any): Promise<UsersProfile> {
+    const profile = await this.usersProfileRepository.findOne({
+      where: { userId: user },
+    });
+    return profile;
   }
-  async addBio(bio: string, userId: number) {
+  async addBio(bio: string, userId: number): Promise<string> {
     const profile = await this.usersProfileRepository.findOne({
       where: { userId },
     });
@@ -29,13 +32,12 @@ export class ProfileService {
       const existUser = await this.usersProfileRepository.findOne({
         where: { userId: user },
       });
-      if (!existUser) throw new UnauthorizedException();
 
-      console.log(url);
+      if (!existUser) throw new UnauthorizedException();
 
       existUser.avatar = url;
       await this.usersProfileRepository.save(existUser);
-      console.log(existUser);
+
       return 'Avatar successfully added';
     } catch (error) {
       return error.message;

@@ -33,7 +33,7 @@ export class MessageUser {
   @CreateDateColumn()
   created_at: Date;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'timestamp', nullable: true })
   expire_at: Date; // Дата, коли запис стане "старим"
 
   @BeforeInsert()

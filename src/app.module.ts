@@ -14,6 +14,8 @@ import { RegistrationModule } from './registration/registration.module';
 import { S3Service } from './s3/s3.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskService } from './task/task.service';
+import { MailModule } from './mail/mail.module';
+
 dotenv.config();
 
 @Module({
@@ -41,6 +43,7 @@ dotenv.config();
     CourseModule,
     SocialModule,
     RegistrationModule,
+    MailModule,
   ],
   controllers: [ProfileController],
   providers: [ProfileService, S3Service, TaskService],
