@@ -15,6 +15,7 @@ import { MailService } from 'src/mail/mail.service';
 import { VereficationEmail } from './entities/verefication.entity';
 import { randomBytes } from 'crypto';
 import { MessageUser } from 'src/social/entity/message.entity';
+import { ProfileSetings } from 'src/profile/entity/profileSetings.entity';
 
 @Injectable()
 export class UserService {
@@ -28,6 +29,8 @@ export class UserService {
     private readonly vereficationEmailRepository: Repository<VereficationEmail>,
     @InjectRepository(MessageUser)
     private readonly messageUserRepository: Repository<MessageUser>,
+    @InjectRepository(ProfileSetings)
+    private readonly profileSetingsRepository: Repository<ProfileSetings>,
   ) {}
   async createUser(createUserDto: CreateUserDto) {
     const existUser = await this.userRepository.findOne({
@@ -91,6 +94,7 @@ export class UserService {
     const existUser = await this.userRepository.findOne({
       where: { userToken: token },
     });
+    console.log(existPass);
 
     if (!existUser || existUser.id != existPass.userId)
       throw new ForbiddenException(
@@ -126,6 +130,10 @@ export class UserService {
       surname: existPass.surname,
       nickName: existPass.nickName,
     });
+    const setingsProfile = await this.profileSetingsRepository.create({
+      id: profile.userId,
+    });
+    await this.profileSetingsRepository.save(setingsProfile);
     await this.usersProfileRepository.save(profile);
     await this.vereficationEmailRepository.delete(existPass.ReqId);
     await this.messageUserRepository.save({
@@ -143,13 +151,3 @@ export class UserService {
     });
   }
 }
-// const profileUser = await this.usersProfileRepository.create({
-//   userId: user.id, // Встановлення зв'язку з користувачем
-//   nickName: createUserDto.nickName,
-//   name: createUserDto.name,
-//   surname: createUserDto.surname,
-//   email: createUserDto.email,
-//   password: hashedPassword,
-// });
-
-// await this.usersProfileRepository.save(profileUser);

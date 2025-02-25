@@ -1,8 +1,13 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { UsersProfile } from 'src/profile/entity/userProfile.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FriendUser } from 'src/friend-Subscription/entity/friendUser.entity';
+import { ProfileSetings } from './entity/profileSetings.entity';
 @Injectable()
 export class ProfileService {
   constructor(
@@ -10,11 +15,24 @@ export class ProfileService {
     private readonly usersProfileRepository: Repository<UsersProfile>,
     @InjectRepository(FriendUser)
     private readonly userFriendRepository: Repository<FriendUser>,
+    @InjectRepository(ProfileSetings)
+    private readonly userSetingsProfule: Repository<ProfileSetings>,
   ) {}
   async getProfile(user: any): Promise<UsersProfile> {
     const profile = await this.usersProfileRepository.findOne({
       where: { userId: user },
     });
+    const ProfilseStatus = await this.userSetingsProfule.findOne({
+      where: { id: user },
+    });
+    if (ProfilseStatus.publicAccount == false) {
+      const message = {
+        mess: 'This is a private account, subscribe and gain access to view it',
+        user: profile.nickName,
+      };
+      throw new BadRequestException(message);
+    }
+
     return profile;
   }
   async addBio(bio: string, userId: number): Promise<string> {

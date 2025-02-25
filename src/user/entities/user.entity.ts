@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import { UsersProfile } from '../../profile/entity/userProfile.entity';
 import { Course } from 'src/course/entity/course.entity';
+import { ProfileSetings } from 'src/profile/entity/profileSetings.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -29,6 +30,10 @@ export class User {
 
   @OneToMany(() => Course, (course) => course.user)
   course: Course[];
+
+  @OneToOne(() => ProfileSetings, (setings) => setings.user, { cascade: true })
+  @JoinColumn()
+  setings: ProfileSetings;
 
   @OneToOne(() => UsersProfile, (profile) => profile.user, { cascade: true })
   @JoinColumn()

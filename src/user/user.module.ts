@@ -9,6 +9,7 @@ import { AuthModule } from 'src/auth/auth.module';
 import { MailModule } from 'src/mail/mail.module';
 import { VereficationEmail } from './entities/verefication.entity';
 import { MessageUser } from 'src/social/entity/message.entity';
+import { ProfileSetings } from 'src/profile/entity/profileSetings.entity';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { MessageUser } from 'src/social/entity/message.entity';
       UsersProfile,
       VereficationEmail,
       MessageUser,
+      ProfileSetings,
     ]),
   ],
   controllers: [UserController],

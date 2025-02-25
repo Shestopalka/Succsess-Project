@@ -10,7 +10,6 @@ import { FriendsModule } from './friend-Subscription/friends.module';
 import { ProfileController } from './profile/profile.controller';
 import { ProfileService } from './profile/profile.service';
 import { ProfileModule } from './profile/profile.module';
-import { RegistrationModule } from './registration/registration.module';
 import { S3Service } from './s3/s3.service';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskService } from './task/task.service';
@@ -42,7 +41,6 @@ dotenv.config();
     AuthModule,
     CourseModule,
     SocialModule,
-    RegistrationModule,
     MailModule,
   ],
   controllers: [ProfileController],
