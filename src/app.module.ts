@@ -27,7 +27,7 @@ dotenv.config();
         type: 'postgres',
         host: configService.get<string>('DB_HOST'),
         port: parseInt(configService.get('DB_PORT'), 10),
-        username: configService.get<string>('DB_USERNAME'),
+        username: 'postgres',
         password: String(configService.get<string>('DB_PASSWORD')),
         database: configService.get<string>('DB_NAME'),
         synchronize: true,

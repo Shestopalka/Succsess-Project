@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Repository } from 'typeorm';
@@ -18,7 +19,9 @@ export class ProfileService {
     @InjectRepository(ProfileSetings)
     private readonly userSetingsProfule: Repository<ProfileSetings>,
   ) {}
+  private readonly logger = new Logger(ProfileService.name);
   async getProfile(user: any): Promise<UsersProfile> {
+    this.logger.warn('This GETPROFILE...');
     const profile = await this.usersProfileRepository.findOne({
       where: { userId: user },
     });

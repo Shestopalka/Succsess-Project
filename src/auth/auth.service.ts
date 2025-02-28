@@ -6,6 +6,7 @@ import { User } from 'src/user/entities/user.entity';
 import { UsersProfile } from 'src/profile/entity/userProfile.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FriendUser } from 'src/friend-Subscription/entity/friendUser.entity';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class AuthService {
   constructor(
@@ -42,5 +43,15 @@ export class AuthService {
       throw new BadRequestException('The keys do not match');
     }
     return await { user: user, message: 'Access granted', role: 'admin' };
+  }
+
+  async comparePassword(password: string, user: any): Promise<boolean> {
+    const existUser = await this.userRepository.findOne({
+      where: { email: user.email },
+    });
+    const comparePassword = await bcrypt.compare(password, existUser.password);
+    if (!comparePassword) return false;
+
+    return true;
   }
 }

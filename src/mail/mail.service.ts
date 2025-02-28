@@ -20,17 +20,17 @@ export class MailService {
     });
   }
 
-  async ResetPassword(
+  async VereficationResetPassword(
     to: string,
     username: string,
-    vereficationCode: number,
+    vereficationURL: string,
   ): Promise<void> {
     await this.mailerService.sendMail({
       to: to,
       subject: 'Reset password',
       template: 'resetPass',
       context: {
-        vereficationCode,
+        vereficationURL,
         username,
       },
     });
