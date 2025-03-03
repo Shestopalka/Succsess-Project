@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from 'src/user/user.module';
+import { UserModule } from 'src/registrationUsers/user.module';
 import { AuthModule } from 'src/auth/auth.module';
 import { SocialController } from './social.controller';
 import { SocialService } from './social.service';

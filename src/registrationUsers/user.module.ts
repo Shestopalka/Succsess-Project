@@ -10,10 +10,12 @@ import { MailModule } from 'src/mail/mail.module';
 import { VereficationEmail } from './entities/verefication.entity';
 import { MessageUser } from 'src/social/entity/message.entity';
 import { ProfileSetings } from 'src/profile/entity/profileSetings.entity';
+import { ChangePassword } from './entities/changePassword.entity';
 
 @Module({
   imports: [
     MailModule,
+    forwardRef(() => ProfileSetings),
     forwardRef(() => AuthModule),
     forwardRef(() => FriendsModule),
     TypeOrmModule.forFeature([
@@ -22,6 +24,7 @@ import { ProfileSetings } from 'src/profile/entity/profileSetings.entity';
       VereficationEmail,
       MessageUser,
       ProfileSetings,
+      ChangePassword,
     ]),
   ],
   controllers: [UserController],

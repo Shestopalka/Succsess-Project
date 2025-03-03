@@ -2,7 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { FriendsController } from './friends.controller';
 import { FriendsService } from './friends.service';
 import { AuthModule } from 'src/auth/auth.module';
-import { UserModule } from 'src/user/user.module';
+import { UserModule } from 'src/registrationUsers/user.module';
 import { ProfileModule } from 'src/profile/profile.module';
 import { JwtModule } from '@nestjs/jwt';
 

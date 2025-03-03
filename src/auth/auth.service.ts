@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/registrationUsers/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
-import { User } from 'src/user/entities/user.entity';
+import { User } from 'src/registrationUsers/entities/user.entity';
 import { UsersProfile } from 'src/profile/entity/userProfile.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FriendUser } from 'src/friend-Subscription/entity/friendUser.entity';

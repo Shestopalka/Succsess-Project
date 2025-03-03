@@ -6,13 +6,23 @@ import { ProfileSetings } from '../entity/profileSetings.entity';
 import { ProfileModule } from '../profile.module';
 import { UsersProfile } from '../entity/userProfile.entity';
 import { MailModule } from 'src/mail/mail.module';
-import { User } from 'src/user/entities/user.entity';
+import { User } from 'src/registrationUsers/entities/user.entity';
+import { VereficationEmail } from 'src/registrationUsers/entities/verefication.entity';
+import { ChangePassword } from 'src/registrationUsers/entities/changePassword.entity';
+import { UserModule } from 'src/registrationUsers/user.module';
 
 @Module({
   imports: [
     MailModule,
+    forwardRef(() => UserModule),
     forwardRef(() => ProfileModule),
-    TypeOrmModule.forFeature([ProfileSetings, UsersProfile, User ]),
+    TypeOrmModule.forFeature([
+      ProfileSetings,
+      UsersProfile,
+      User,
+      VereficationEmail,
+      ChangePassword,
+    ]),
   ],
   controllers: [ProfileSetingsController],
   providers: [ProfileSetingsService],

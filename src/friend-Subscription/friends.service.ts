@@ -5,7 +5,7 @@ import { UsersProfile } from 'src/profile/entity/userProfile.entity';
 import { Repository } from 'typeorm';
 import { ProfileService } from 'src/profile/profile.service';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/registrationUsers/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { SubscribersUsers } from './entity/subscription.entity';
 import { MessageUser } from 'src/social/entity/message.entity';

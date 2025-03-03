@@ -1,4 +1,4 @@
-import { User } from 'src/user/entities/user.entity';
+import { User } from 'src/registrationUsers/entities/user.entity';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 
 @Entity()
@@ -6,7 +6,7 @@ export class ProfileSetings {
   @PrimaryColumn()
   id: number;
 
-  @OneToOne(() => User, (user) => user.setings)
+  @OneToOne(() => User, (user) => user.setings, {onDelete: 'CASCADE'})
   @JoinColumn({ name: 'id' })
   user: User;
 

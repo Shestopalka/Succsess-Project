@@ -14,12 +14,15 @@ export class MessageUser {
   @PrimaryGeneratedColumn()
   messageId: number;
 
-  @ManyToOne(() => UsersProfile, (receiver) => receiver.receivedMessages)
+  @ManyToOne(() => UsersProfile, (receiver) => receiver.receivedMessages, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'receiverId' }) // Явна назва зовнішнього ключа
   receiver: UsersProfile;
 
   @ManyToOne(() => UsersProfile, (sender) => sender.sentMessages, {
     nullable: true,
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'senderId' }) // Явна назва зовнішнього ключа
   send: UsersProfile;

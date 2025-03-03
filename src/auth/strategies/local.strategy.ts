@@ -1,8 +1,12 @@
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from '../auth.service';
-import { UserService } from 'src/user/user.service';
+import { UserService } from 'src/registrationUsers/user.service';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
@@ -40,5 +44,5 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     } catch (error) {
       throw new UnauthorizedException(error.message);
     }
- }
+  }
 }

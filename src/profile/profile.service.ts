@@ -21,7 +21,6 @@ export class ProfileService {
   ) {}
   private readonly logger = new Logger(ProfileService.name);
   async getProfile(user: any): Promise<UsersProfile> {
-    this.logger.warn('This GETPROFILE...');
     const profile = await this.usersProfileRepository.findOne({
       where: { userId: user },
     });

@@ -3,8 +3,8 @@ import { Cron } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { MessageUser } from 'src/social/entity/message.entity';
-import { User } from 'src/user/entities/user.entity';
-import { VereficationEmail } from 'src/user/entities/verefication.entity';
+import { User } from 'src/registrationUsers/entities/user.entity';
+import { VereficationEmail } from 'src/registrationUsers/entities/verefication.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

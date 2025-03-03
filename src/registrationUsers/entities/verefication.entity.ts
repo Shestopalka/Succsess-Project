@@ -5,7 +5,7 @@ export class VereficationEmail {
   @PrimaryGeneratedColumn()
   ReqId: number;
 
-  @Column()
+  @Column({ nullable: true })
   VerifyPass: string;
 
   @Column()
@@ -16,16 +16,4 @@ export class VereficationEmail {
 
   @Column({ default: 1 })
   attempt: number;
-
-  @Column()
-  email: string;
-
-  @Column()
-  nickName: string;
-
-  @Column()
-  name: string;
-
-  @Column()
-  surname: string;
 }

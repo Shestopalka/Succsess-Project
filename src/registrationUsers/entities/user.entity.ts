@@ -11,6 +11,7 @@ import {
 import { UsersProfile } from '../../profile/entity/userProfile.entity';
 import { Course } from 'src/course/entity/course.entity';
 import { ProfileSetings } from 'src/profile/entity/profileSetings.entity';
+import { ChangePassword } from './changePassword.entity';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
@@ -28,6 +29,11 @@ export class User {
   @Column()
   password: string;
 
+  @OneToOne(() => ChangePassword, (changePass) => changePass.userId, {
+    cascade: true,
+  })
+  changePass: ChangePassword;
+
   @OneToMany(() => Course, (course) => course.user)
   course: Course[];
 
@@ -35,7 +41,7 @@ export class User {
   @JoinColumn()
   setings: ProfileSetings;
 
-  @OneToOne(() => UsersProfile, (profile) => profile.user, { cascade: true })
+  @OneToOne(() => UsersProfile, (profile) => profile.user, { cascade: true, onDelete: 'CASCADE' })
   @JoinColumn()
   profile: UsersProfile;
 

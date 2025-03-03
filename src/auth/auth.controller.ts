@@ -15,8 +15,7 @@ export class AuthController {
 
   @UseGuards(JwtAuthGuard)
   @Post('login/admin')
-  async loginAdmin(@Body() body, @Request() req) {
-    const { accessKey } = body;
-    return await this.authService.createAdminRole(accessKey, req.user);
+  async loginAdmin(@Body() body: { accessKey: string }, @Request() req) {
+    return await this.authService.createAdminRole(body.accessKey, req.user);
   }
 }
