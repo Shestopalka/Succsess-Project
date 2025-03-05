@@ -13,20 +13,30 @@ import { VereficationEmail } from 'src/registrationUsers/entities/verefication.e
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
 import { ChangePassword } from 'src/registrationUsers/entities/changePassword.entity';
-import { TokenExpiredError } from '@nestjs/jwt';
+import { InjectModel } from '@nestjs/mongoose';
+import { DeleteUsers, DeleteUsersDocumnet } from 'src/registrationUsers/schema/user.schema';
+import { Model } from 'mongoose';
 @Injectable()
 export class ProfileSetingsService {
   constructor(
     @InjectRepository(ProfileSetings)
     private readonly profileSetingsRepository: Repository<ProfileSetings>,
+
     @InjectRepository(UsersProfile)
     private readonly userProfileRepository: Repository<UsersProfile>,
+
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+
     @InjectRepository(VereficationEmail)
     private readonly vereficationEmailRepository: Repository<VereficationEmail>,
+
     @InjectRepository(ChangePassword)
     private readonly changePasswordRepository: Repository<ChangePassword>,
+
+    @InjectModel(DeleteUsers.name)
+    private deleteUserModel: Model<DeleteUsers>,
+
     private readonly mailService: MailService,
   ) {}
   async StatusAccount(userId: number) {
@@ -56,10 +66,9 @@ export class ProfileSetingsService {
     const existChange = await this.changePasswordRepository.findOne({
       where: { id: existUser.id },
     });
-    console.log(existChange);
-    
+
     if (existChange) throw new BadRequestException('Try a little later');
-    
+
     const comparePassword = await bcrypt.compare(password, existUser.password);
 
     if (comparePassword)
@@ -125,6 +134,17 @@ export class ProfileSetingsService {
       where: { userId: existUser.id },
     });
     await this.userRepository.remove(existUser);
+    const name = existProfile.name;
+    const email = existProfile.email;
+    const dellUser = new this.deleteUserModel({
+      email: existProfile.email,
+      name: existProfile.name,
+      surName: existProfile.surname,
+      nickName: existProfile.surname,
+      avatar: existProfile.avatar,
+      publicAccount: true,
+    });
+    await dellUser.save();
     await this.mailService.accountDeletionMessage(
       existProfile.email,
       existProfile.name,

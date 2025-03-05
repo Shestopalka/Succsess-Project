@@ -45,4 +45,15 @@ export class MailService {
       }
     })
   }
+
+  async messageReturnedUser(to: string, link: string): Promise<void>{
+    await this.mailerService.sendMail({
+      to: to,
+      subject: 'We are glad to see you again!',
+      template: 'userReturn',
+      context: {
+        link,
+      },
+    });
+  }
 }

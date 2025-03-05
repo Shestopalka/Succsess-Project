@@ -17,6 +17,11 @@ import { randomBytes } from 'crypto';
 import { MessageUser } from 'src/social/entity/message.entity';
 import { ProfileSetings } from 'src/profile/entity/profileSetings.entity';
 
+import { InjectModel } from '@nestjs/mongoose';
+import { DeleteUsers, DeleteUsersSchema } from './schema/user.schema';
+import { Model } from 'mongoose';
+import { create } from 'domain';
+
 @Injectable()
 export class UserService {
   constructor(
@@ -31,6 +36,9 @@ export class UserService {
     private readonly messageUserRepository: Repository<MessageUser>,
     @InjectRepository(ProfileSetings)
     private readonly profileSetingsRepository: Repository<ProfileSetings>,
+
+    @InjectModel(DeleteUsers.name)
+    private deleteUserModel: Model<DeleteUsers>,
   ) {}
 
   async createUser(createUserDto: CreateUserDto) {
@@ -39,6 +47,25 @@ export class UserService {
         email: createUserDto.email,
       },
     }); // Пошук користувача за емайлом
+    const existDellUser = await this.findDelletedAccount(createUserDto.email); // Шукаємо чи не був користувач зарегістрований раніше
+    if (existDellUser) {
+      const token = randomBytes(32).toString('hex'); // створюємо унікальний токен
+      const saltRounds = 10;
+      const hashedPassword = await bcrypt.hash(
+        createUserDto.password,
+        saltRounds,
+      ); // хешування паролю.
+      const returnUsers = await this.userRepository.create({
+        email: createUserDto.email,
+        password: hashedPassword,
+        userToken: token,
+      }); // створюємо запис в таблиці користувачів
+      await this.userRepository.save(returnUsers); 
+      return this.mailService.messageReturnedUser(
+        returnUsers.email,
+        `http://localhost:4000/users/registrarion/returnUser${token}`,
+      ); // надсилаємо користувачу повідомлення на пошту
+    }
     const existNickName = await this.usersProfileRepository.findOne({
       where: { nickName: createUserDto.nickName },
     }); // Пошук користувача за Нікнеймом
@@ -97,9 +124,41 @@ export class UserService {
 
     return vereficationToker; // Повертаємо токен верефікації за для унікального маршуту.
   }
+  async findDelletedAccount(email: string){ // Функція для перевірки чи не був користувач зарегістрований раніше.
+    const existDelletedAccount = await this.deleteUserModel.findOne({
+      email: email,
+    });
+    if (existDelletedAccount) return existDelletedAccount; // В разі знайденого запису, повертаємо документ користувача.
 
-  async vereficationUserURL(user: any) {
-    const vereficationToker = randomBytes(32).toString('hex');
+    return false;
+  }
+
+  async returnUsers(token: string) {
+    const existUser = await this.userRepository.findOne({
+      where: { userToken: token },
+    });
+    const existDellUser = await this.deleteUserModel.findOne({
+      email: existUser.email,
+    });
+    const returnProfileUser = await this.usersProfileRepository.create({
+      userId: existUser.id,
+      nickName: existDellUser.nickName,
+      name: existDellUser.name,
+      surname: existDellUser.surName,
+      email: existDellUser.email,
+      avatar: existDellUser.avatar,
+    });
+    const profileSetings = await this.profileSetingsRepository.create({
+      id: existUser.id,
+      publicAccount: existDellUser.publicAccount,
+    });
+    await this.userRepository.update(
+      { isVerified: existUser.isVerified, userToken: existUser.userToken },
+      { isVerified: true, userToken: '' },
+    );
+    await this.profileSetingsRepository.save(profileSetings);
+    await this.deleteUserModel.deleteOne({email: existDellUser.email});
+    return await this.usersProfileRepository.save(returnProfileUser);
   }
 
   async VereficationUserPass(pass: string, token: string) {

@@ -56,7 +56,7 @@ export class ProfileSetingsController {
 
   @UseGuards(JwtAuthGuard)
   @Get('accountDeleted')
-  async deleteUserAccount(@Request() req){
+  async deleteUserAccount(@Request() req) {
     await this.profileSetingsService.vereficationForDeleteUserAccount(req.user);
   }
 

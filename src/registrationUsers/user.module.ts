@@ -2,6 +2,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { MongooseModule } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
 import { UsersProfile } from '../profile/entity/userProfile.entity';
 import { FriendsModule } from 'src/friend-Subscription/friends.module';
@@ -11,6 +12,7 @@ import { VereficationEmail } from './entities/verefication.entity';
 import { MessageUser } from 'src/social/entity/message.entity';
 import { ProfileSetings } from 'src/profile/entity/profileSetings.entity';
 import { ChangePassword } from './entities/changePassword.entity';
+import { DeleteUsers, DeleteUsersSchema } from './schema/user.schema';
 
 @Module({
   imports: [
@@ -18,6 +20,9 @@ import { ChangePassword } from './entities/changePassword.entity';
     forwardRef(() => ProfileSetings),
     forwardRef(() => AuthModule),
     forwardRef(() => FriendsModule),
+    MongooseModule.forFeature([
+      { name: DeleteUsers.name, schema: DeleteUsersSchema },
+    ]),
     TypeOrmModule.forFeature([
       User,
       UsersProfile,

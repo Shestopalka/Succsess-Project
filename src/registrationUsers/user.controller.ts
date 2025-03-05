@@ -6,6 +6,8 @@ import {
   UsePipes,
   Param,
   Get,
+  BadGatewayException,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -30,5 +32,17 @@ export class UserController {
     const pass = body.verefyPass;
 
     return this.userService.VereficationUserPass(pass, vereficationToken);
+  }
+
+  @Get('registration/returnUser')
+  @UsePipes(new ValidationPipe())
+  async returnAccounUser(@Query('token') token: string) {
+    if (!token) throw new BadGatewayException();
+
+    const tokenValid = await this.userService.verefyResetToken(token);
+
+    if (!tokenValid) throw new BadGatewayException();
+
+    return await this.userService.returnUsers(token);
   }
 }

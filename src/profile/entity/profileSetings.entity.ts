@@ -6,7 +6,7 @@ export class ProfileSetings {
   @PrimaryColumn()
   id: number;
 
-  @OneToOne(() => User, (user) => user.setings, {onDelete: 'CASCADE'})
+  @OneToOne(() => User, (user) => user.setings, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'id' })
   user: User;
 

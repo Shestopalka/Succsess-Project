@@ -14,10 +14,10 @@ export class ChangePassword {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   changePassword: string;
 
-  @OneToOne(() => User, (user) => user.changePass)
+  @OneToOne(() => User, (user) => user.changePass, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   userId: User;
 

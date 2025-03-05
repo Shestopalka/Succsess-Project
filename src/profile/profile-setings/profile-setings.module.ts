@@ -10,12 +10,20 @@ import { User } from 'src/registrationUsers/entities/user.entity';
 import { VereficationEmail } from 'src/registrationUsers/entities/verefication.entity';
 import { ChangePassword } from 'src/registrationUsers/entities/changePassword.entity';
 import { UserModule } from 'src/registrationUsers/user.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import {
+  DeleteUsers,
+  DeleteUsersSchema,
+} from 'src/registrationUsers/schema/user.schema';
 
 @Module({
   imports: [
     MailModule,
     forwardRef(() => UserModule),
     forwardRef(() => ProfileModule),
+    MongooseModule.forFeature([
+      { name: DeleteUsers.name, schema: DeleteUsersSchema },
+    ]),
     TypeOrmModule.forFeature([
       ProfileSetings,
       UsersProfile,
