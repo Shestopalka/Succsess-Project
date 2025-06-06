@@ -135,12 +135,6 @@ cd Succsess-Project
 ## Description
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Project setup
-
-```bash
-$ npm install
-```
-
 ## Компіляція та запуск проекту
 
 ```bash
