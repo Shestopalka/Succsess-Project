@@ -48,6 +48,79 @@
 - **Git**  
   ➤ [Встановити Git](https://git-scm.com/downloads)
 
+## .evn
+Створення файлу .env
+Створи файл .env у корені проєкту та додай наступні змінні середовища:
+```bach
+# PostgreSQL
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=99445753
+DB_NAME=database
+
+# AWS S3
+AWS_ACCESS_KEY_ID= you access-key
+AWS_SECRET_ACCESS_KEY=you secret-key
+AWS_REGION=us-east-1
+AWS_S3_BUCKET_NAME=succsess-s3
+```
+## 4. Запуск бази даних за допомогою Docker
+Переконайтеся, що у тебе встановлені Docker та Docker Compose.
+
+Створіть docker-compuse.yml та додайте в нього:
+```bash
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: succsess-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 99445753
+      POSTGRES_DB: database
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  mongo:
+    image: mongo:6
+    container_name: succsess-mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  postgres_data:
+  mongo_data:
+```
+
+Запусти базу даних PostgreSQL та MongoDB:
+```bash
+docker-compose up -d
+```
+Можна перевірити з'єднання за допомогою MongoDB Compass або клієнта в терміналі:
+```bash
+mongo mongodb://root:example@localhost:27017
+```
+## Інтеграція з AWS S3
+Додаток використовує AWS S3 для зберігання файлів. Для цього необхідно:
+
+Створити бакет у AWS S3 з назвою, вказаною у AWS_S3_BUCKET_NAME.
+
+Налаштувати облікові дані AWS у файлі .env.
+
+Використовувати відповідні сервіси або контролери у додатку для завантаження та отримання файлів з S3.
+
+
 ## Встановлення та запуск
 ```bash
 $ npm install
@@ -57,9 +130,9 @@ $ npm install
 ```bash
 git clone https://github.com/Shestopalka/Succsess-Project.git
 cd Succsess-Project
+```
 
 ## Description
-
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Project setup
