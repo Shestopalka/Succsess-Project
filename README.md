@@ -48,7 +48,14 @@
 - **Git**  
   ➤ [Встановити Git](https://git-scm.com/downloads)
 
-## .evn
+### 1. Клонування репозиторію
+
+```bash
+git clone https://github.com/Shestopalka/Succsess-Project.git
+cd Succsess-Project
+```
+
+##2 .evn
 Створення файлу .env
 Створи файл .env у корені проєкту та додай наступні змінні середовища:
 ```bach
@@ -65,7 +72,7 @@ AWS_SECRET_ACCESS_KEY=you secret-key
 AWS_REGION=us-east-1
 AWS_S3_BUCKET_NAME=succsess-s3
 ```
-## 4. Запуск бази даних за допомогою Docker
+## 3. Запуск бази даних за допомогою Docker
 Переконайтеся, що у тебе встановлені Docker та Docker Compose.
 
 Створіть docker-compuse.yml та додайте в нього:
@@ -111,7 +118,7 @@ docker-compose up -d
 ```bash
 mongo mongodb://root:example@localhost:27017
 ```
-## Інтеграція з AWS S3
+## 4 Інтеграція з AWS S3
 Додаток використовує AWS S3 для зберігання файлів. Для цього необхідно:
 
 Створити бакет у AWS S3 з назвою, вказаною у AWS_S3_BUCKET_NAME.
@@ -121,21 +128,15 @@ mongo mongodb://root:example@localhost:27017
 Використовувати відповідні сервіси або контролери у додатку для завантаження та отримання файлів з S3.
 
 
-## Встановлення та запуск
+## 5 Встановлення пакетів
 ```bash
 $ npm install
-```
-### 1. Клонування репозиторію
-
-```bash
-git clone https://github.com/Shestopalka/Succsess-Project.git
-cd Succsess-Project
 ```
 
 ## Description
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Компіляція та запуск проекту
+## 6 Компіляція та запуск проекту
 
 ```bash
 # development
@@ -151,7 +152,7 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 
-## Запуск тестів
+## 7 Запуск тестів
 ```bash
 # unit tests
 $ npm run test
